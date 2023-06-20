@@ -15,7 +15,14 @@
 
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import Main from './pages/Main'
+
+import path from 'path'
+import process from 'process'
 function App() {
+  window.home_dir = path.join(
+    process.platform === 'win32' ? process.env['APPDATA'] : process.env['HOME'],
+    '.pimi-launcher'
+  )
   return (
     <HashRouter>
       <Routes>

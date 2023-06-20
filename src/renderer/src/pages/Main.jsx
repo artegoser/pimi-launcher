@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { utils } from 'pimi-launcher-core'
 import { launch } from '../components/utils'
+import Select from 'react-select'
+import path from 'path'
+import fs from 'fs'
 function Main() {
   const [versions, setVersions] = useState(false)
   const [version, setVersion] = useState(false)
@@ -23,12 +26,19 @@ function Main() {
   const [progress, setProgress] = useState(false)
   const [started, setStarted] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
+  const [installed_versions, setInstalledVersions] = useState(false)
 
-  if (!versions)
-    utils.getVersions().then((data) => {
-      setVersions(data.filter((v) => v.type === 'release'))
-      setVersion(data[0])
-    })
+  useEffect(() => {
+    if (!versions) {
+      utils.getVersions().then((data) => {
+        setVersions(data.filter((v) => v.type === 'release'))
+        setVersion(data[0])
+        setInstalledVersions(fs.readdirSync(path.join(window.home_dir, 'versions')))
+      })
+    }
+  })
+
+  console.log('hi')
 
   return (
     versions && (
@@ -46,18 +56,30 @@ function Main() {
           />
         </div>
         <div>
-            name="pets"
-            id="pet-select"
-            className="inputs"
+          <Select
             onChange={(e) => {
+              setVersion(versions[e.value])
             }}
-            {versions.map((version, index) => {
-              return (
-                <option key={index} value={index} className="text-1xl font-bold">
-                  {version.id}
-                </option>
-              )
+            defaultValue={{ value: versions[0], label: versions[0].id }}
+            options={versions.map((version, index) => {
+              return {
+                value: index,
+                label: version.id,
+                type: version.type,
+                installed: installed_versions?.includes(version.id)
+              }
             })}
+            styles={{
+              control: (styles) => ({
+                ...styles,
+                backgroundColor: 'white'
+              }),
+              option: (styles, { data, isFocused }) => ({
+                ...styles,
+                backgroundColor: isFocused ? '#c9d2e7' : data.installed ? '#cccccc' : 'white'
+              })
+            }}
+          />
         </div>
         <div>
           <input
