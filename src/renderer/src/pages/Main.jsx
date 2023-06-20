@@ -24,10 +24,11 @@ function Main() {
   const [started, setStarted] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
 
-  utils.getVersions().then((data) => {
-    setVersions(data)
-    setVersion(data[0])
-  })
+  if (!versions)
+    utils.getVersions().then((data) => {
+      setVersions(data.filter((v) => v.type === 'release'))
+      setVersion(data[0])
+    })
 
   return (
     versions && (
@@ -45,14 +46,11 @@ function Main() {
           />
         </div>
         <div>
-          <select
             name="pets"
             id="pet-select"
             className="inputs"
             onChange={(e) => {
-              setVersion(versions[e.target.value])
             }}
-          >
             {versions.map((version, index) => {
               return (
                 <option key={index} value={index} className="text-1xl font-bold">
@@ -60,7 +58,6 @@ function Main() {
                 </option>
               )
             })}
-          </select>
         </div>
         <div>
           <input
