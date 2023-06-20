@@ -15,22 +15,80 @@
 
 import { useState } from 'react'
 import { utils } from 'pimi-launcher-core'
+import { launch } from '../components/utils'
 function Main() {
   const [versions, setVersions] = useState(false)
+  const [version, setVersion] = useState(false)
+  const [download, setDownload] = useState(false)
+  const [progress, setProgress] = useState(false)
+  const [started, setStarted] = useState(false)
+  const [gameStarted, setGameStarted] = useState(false)
 
   utils.getVersions().then((data) => {
     setVersions(data)
+    setVersion(data[0])
   })
 
-  if (versions)
-    return versions.map((version) => {
-      return (
-        <div key={version.id} className="text-3xl font-bold">
-          {version.id}
+  return (
+    versions && (
+      <div className="grid grid-cols-3 gap-4 m-5">
+        <div>
+          <input
+            type="text"
+            id="name"
+            className="inputs"
+            placeholder="Your name"
+            defaultValue={localStorage.getItem('name') || 'Steve'}
+            onChange={(e) => {
+              localStorage.setItem('name', e.target.value)
+            }}
+          />
         </div>
-      )
-    })
-  else return <></>
+        <div>
+          <select
+            name="pets"
+            id="pet-select"
+            className="inputs"
+            onChange={(e) => setVersion(e.target.value)}
+          >
+            {versions.map((version) => {
+              return (
+                <option key={version.id} value={version} className="text-1xl font-bold underline">
+                  {version.id}
+                </option>
+              )
+            })}
+          </select>
+        </div>
+        <div>
+          <input
+            type="button"
+            value="Start"
+            className="inputs"
+            onClick={() => {
+              launch(version, setProgress, setDownload, setGameStarted, setStarted)
+              setStarted(true)
+            }}
+          />
+        </div>
+
+        {started && gameStarted && (
+          <>
+            <div>Minecraft launches...</div>
+          </>
+        )}
+        {started && !gameStarted && (
+          <>
+            <div>Downloading{'.'.repeat(progress.task % 3)}</div>
+            <div>
+              {download || 'please wait'} {`(${progress.type})` || ''}
+            </div>
+            <div>{((progress.task / progress.total) * 100 || 0).toFixed(2)}%</div>
+          </>
+        )}
+      </div>
+    )
+  )
 }
 
 export default Main

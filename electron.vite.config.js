@@ -18,7 +18,7 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 import commonjsExternals from 'vite-plugin-commonjs-externals'
 
-const externals = ['pimi-launcher-core']
+const externals = ['pimi-launcher-core', 'path']
 
 export default defineConfig({
   main: {

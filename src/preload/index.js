@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import { contextBridge } from 'electron'
+import { contextBridge, nativeImage } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -24,6 +24,7 @@ const api = {}
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
+    contextBridge.exposeInMainWorld('nativeImage', nativeImage)
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
@@ -32,4 +33,5 @@ if (process.contextIsolated) {
 } else {
   window.electron = electronAPI
   window.api = api
+  window.nativeImage = nativeImage
 }

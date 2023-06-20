@@ -15,7 +15,7 @@ module.exports = async (context) => {
     return
   }
 
-  const appId = 'com.electron.app'
+  const appId = 'com.pimi-launcher.app'
 
   const { appOutDir } = context
 

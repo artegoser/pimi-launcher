@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "An Electron application with React",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://www.electronjs.org",
+  "author": "artegoser",
+  "homepage": "https://github.com/artegoser/pimi-launcher",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@electron/notarize": "^1.2.3",
     "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
     "electron": "^24.4.1",
     "electron-builder": "^24.4.0",
     "electron-vite": "^1.0.23",
@@ -35,6 +36,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
+    "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

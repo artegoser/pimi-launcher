@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.pimi-launcher.app
 productName: pimi-launcher
 directories:
   buildResources: build
