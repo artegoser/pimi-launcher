@@ -49,11 +49,13 @@ function Main() {
             name="pets"
             id="pet-select"
             className="inputs"
-            onChange={(e) => setVersion(e.target.value)}
+            onChange={(e) => {
+              setVersion(versions[e.target.value])
+            }}
           >
-            {versions.map((version) => {
+            {versions.map((version, index) => {
               return (
-                <option key={version.id} value={version} className="text-1xl font-bold underline">
+                <option key={index} value={index} className="text-1xl font-bold underline">
                   {version.id}
                 </option>
               )

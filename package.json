@@ -1,7 +1,7 @@
 {
   "name": "pimi-launcher",
-  "version": "1.0.0",
-  "description": "An Electron application with React",
+  "version": "1.0.0-alpha",
+  "description": "Modern Minecraft Launcher",
   "main": "./out/main/index.js",
   "author": "artegoser",
   "homepage": "https://github.com/artegoser/pimi-launcher",

@@ -1,7 +1,8 @@
 import { Client, Authenticator } from 'pimi-launcher-core'
-
+import path from 'path'
+import process from 'process'
 async function launch(version, setProgress, setDownload, setGameStarted, setStarted) {
-  console.log(version)
+  const appdata = process.platform === 'win32' ? process.env.APPDATA : process.env.HOME
   const launcher = new Client()
 
   let opts = {
@@ -9,7 +10,7 @@ async function launch(version, setProgress, setDownload, setGameStarted, setStar
       localStorage.getItem('name') || 'Steve',
       localStorage.getItem('password') || ''
     ),
-    root: './.pimi',
+    root: path.join(appdata, '.pimi-launcher'),
     version: {
       number: version.id,
       type: version.type
