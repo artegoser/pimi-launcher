@@ -1,8 +1,9 @@
 import { Client, Authenticator } from 'pimi-launcher-core'
 import path from 'path'
 import process from 'process'
+
 async function launch(version, setProgress, setDownload, setGameStarted, setStarted) {
-  const appdata = process.platform === 'win32' ? process.env.APPDATA : process.env.HOME
+  const appdata = process.platform === 'win32' ? process.env['APPDATA'] : process.env['HOME']
   const launcher = new Client()
 
   let opts = {
@@ -21,6 +22,8 @@ async function launch(version, setProgress, setDownload, setGameStarted, setStar
     }
   }
 
+  launcher.launch(opts)
+
   launcher.on('progress', (e) => setProgress(e))
   launcher.on('download', (e) => setDownload(e))
   launcher.on('debug', (e) => console.log(e))
@@ -31,7 +34,6 @@ async function launch(version, setProgress, setDownload, setGameStarted, setStar
     setGameStarted(false)
     setStarted(false)
   })
-  await launcher.launch(opts)
 }
 
 export { launch }

@@ -55,7 +55,7 @@ function Main() {
           >
             {versions.map((version, index) => {
               return (
-                <option key={index} value={index} className="text-1xl font-bold underline">
+                <option key={index} value={index} className="text-1xl font-bold">
                   {version.id}
                 </option>
               )
@@ -71,21 +71,24 @@ function Main() {
               launch(version, setProgress, setDownload, setGameStarted, setStarted)
               setStarted(true)
             }}
+            disabled={started}
           />
         </div>
 
         {started && gameStarted && (
           <>
-            <div>Minecraft launches...</div>
+            <div className="text-2xl font-bold">Minecraft launches...</div>
           </>
         )}
         {started && !gameStarted && (
           <>
-            <div>Downloading{'.'.repeat(progress.task % 3)}</div>
-            <div>
+            <div className="text-2xl font-bold">Downloading{'.'.repeat(progress.task % 3)}</div>
+            <div className="break-words text-2xl font-bold">
               {download || 'please wait'} {`(${progress.type})` || ''}
             </div>
-            <div>{((progress.task / progress.total) * 100 || 0).toFixed(2)}%</div>
+            <div className="text-2xl font-bold">
+              {((progress.task / progress.total) * 100 || 0).toFixed(2)}%
+            </div>
           </>
         )}
       </div>
