@@ -58,6 +58,8 @@ function Main() {
           </div>
           <div>
             <Select
+              isLoading={started && !gameStarted}
+              classNamePrefix="react-select"
               onChange={(e) => {
                 setVersion(versions[e.value])
               }}
@@ -77,7 +79,7 @@ function Main() {
                 }),
                 option: (styles, { data, isFocused }) => ({
                   ...styles,
-                  backgroundColor: isFocused ? '#c9d2e7' : data.installed ? '#cccccc' : 'white'
+                  backgroundColor: isFocused ? '#eaeaea' : data.installed ? '#f1f1f1' : 'white'
                 })
               }}
             />
