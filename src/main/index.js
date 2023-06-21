@@ -19,29 +19,6 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { autoUpdater } from 'electron-updater'
 
-autoUpdater.checkForUpdatesAndNotify()
-
-autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update...')
-})
-autoUpdater.on('update-available', () => {
-  console.log('Update available.')
-})
-autoUpdater.on('update-not-available', () => {
-  console.log('Update not available.')
-})
-autoUpdater.on('error', () => {
-  console.log('Error in auto-updater.')
-})
-autoUpdater.on('download-progress', () => {
-  console.log('Download progress...')
-})
-
-autoUpdater.on('update-downloaded', () => {
-  console.log('Update downloaded')
-  autoUpdater.quitAndInstall()
-})
-
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -90,6 +67,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  autoUpdater.checkForUpdatesAndNotify()
   createWindow()
 
   app.on('activate', function () {
