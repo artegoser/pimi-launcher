@@ -19,6 +19,7 @@ import { launch } from '../components/utils'
 import Select from 'react-select'
 import path from 'path'
 import fs from 'fs'
+import MinecraftTerminal from '../components/MinecraftTerminal'
 function Main() {
   const [versions, setVersions] = useState(false)
   const [version, setVersion] = useState(false)
@@ -27,6 +28,7 @@ function Main() {
   const [started, setStarted] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
   const [installed_versions, setInstalledVersions] = useState(false)
+  const [terminalLines, setTerminalLines] = useState([])
 
   useEffect(() => {
     if (!versions) {
@@ -38,79 +40,86 @@ function Main() {
     }
   })
 
-  console.log('hi')
-
   return (
     versions && (
-      <div className="grid grid-cols-3 gap-4 m-5">
-        <div>
-          <input
-            type="text"
-            id="name"
-            className="inputs"
-            placeholder="Your name"
-            defaultValue={localStorage.getItem('name') || 'Steve'}
-            onChange={(e) => {
-              localStorage.setItem('name', e.target.value)
-            }}
-          />
-        </div>
-        <div>
-          <Select
-            onChange={(e) => {
-              setVersion(versions[e.value])
-            }}
-            defaultValue={{ value: versions[0], label: versions[0].id }}
-            options={versions.map((version, index) => {
-              return {
-                value: index,
-                label: version.id,
-                type: version.type,
-                installed: installed_versions?.includes(version.id)
-              }
-            })}
-            styles={{
-              control: (styles) => ({
-                ...styles,
-                backgroundColor: 'white'
-              }),
-              option: (styles, { data, isFocused }) => ({
-                ...styles,
-                backgroundColor: isFocused ? '#c9d2e7' : data.installed ? '#cccccc' : 'white'
-              })
-            }}
-          />
-        </div>
-        <div>
-          <input
-            type="button"
-            value="Start"
-            className="inputs"
-            onClick={() => {
-              launch(version, setProgress, setDownload, setGameStarted, setStarted)
-              setStarted(true)
-            }}
-            disabled={started}
-          />
-        </div>
+      <>
+        <div className="grid grid-cols-3 gap-4 m-5">
+          <div>
+            <input
+              type="text"
+              id="name"
+              className="inputs"
+              placeholder="Your name"
+              defaultValue={localStorage.getItem('name') || 'Steve'}
+              onChange={(e) => {
+                localStorage.setItem('name', e.target.value)
+              }}
+            />
+          </div>
+          <div>
+            <Select
+              onChange={(e) => {
+                setVersion(versions[e.value])
+              }}
+              defaultValue={{ value: versions[0], label: versions[0].id }}
+              options={versions.map((version, index) => {
+                return {
+                  value: index,
+                  label: version.id,
+                  type: version.type,
+                  installed: installed_versions?.includes(version.id)
+                }
+              })}
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: 'white'
+                }),
+                option: (styles, { data, isFocused }) => ({
+                  ...styles,
+                  backgroundColor: isFocused ? '#c9d2e7' : data.installed ? '#cccccc' : 'white'
+                })
+              }}
+            />
+          </div>
+          <div>
+            <input
+              type="button"
+              value="Start"
+              className="inputs"
+              onClick={() => {
+                launch(
+                  version,
+                  setProgress,
+                  setDownload,
+                  setGameStarted,
+                  setStarted,
+                  setTerminalLines
+                )
+                setStarted(true)
+              }}
+              disabled={started}
+            />
+          </div>
 
-        {started && gameStarted && (
-          <>
-            <div className="text-2xl font-bold">Minecraft launches...</div>
-          </>
+          {started && !gameStarted && (
+            <>
+              <div className="text-2xl font-bold">Downloading{'.'.repeat(progress.task % 3)}</div>
+              <div className="break-words text-2xl font-bold">
+                {download || 'please wait'} {`(${progress.type})` || ''}
+              </div>
+              <div className="text-2xl font-bold">
+                {((progress.task / progress.total) * 100 || 0).toFixed(2)}%
+              </div>
+            </>
+          )}
+        </div>
+        {started && (
+          <div className="m-5">
+            <MinecraftTerminal lines={terminalLines} />
+          </div>
         )}
-        {started && !gameStarted && (
-          <>
-            <div className="text-2xl font-bold">Downloading{'.'.repeat(progress.task % 3)}</div>
-            <div className="break-words text-2xl font-bold">
-              {download || 'please wait'} {`(${progress.type})` || ''}
-            </div>
-            <div className="text-2xl font-bold">
-              {((progress.task / progress.total) * 100 || 0).toFixed(2)}%
-            </div>
-          </>
-        )}
-      </div>
+      </>
     )
   )
 }

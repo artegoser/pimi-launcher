@@ -1,7 +1,14 @@
 import { Client, Authenticator } from 'pimi-launcher-core'
-
-async function launch(version, setProgress, setDownload, setGameStarted, setStarted) {
+async function launch(
+  version,
+  setProgress,
+  setDownload,
+  setGameStarted,
+  setStarted,
+  setTerminalLines
+) {
   const launcher = new Client()
+  let terminalLines = []
 
   let opts = {
     authorization: Authenticator.getAuth(
@@ -23,13 +30,20 @@ async function launch(version, setProgress, setDownload, setGameStarted, setStar
 
   launcher.on('progress', (e) => setProgress(e))
   launcher.on('download', (e) => setDownload(e))
-  launcher.on('debug', (e) => console.log(e))
-  launcher.on('data', (e) => console.log(e))
+  launcher.on('debug', (e) => {
+    terminalLines = terminalLines.concat(e)
+    setTerminalLines(terminalLines)
+  })
+  launcher.on('data', (e) => {
+    terminalLines = terminalLines.concat(e)
+    setTerminalLines(terminalLines)
+  })
 
   launcher.on('arguments', () => setGameStarted(true))
   launcher.on('close', () => {
     setGameStarted(false)
     setStarted(false)
+    setTerminalLines([])
   })
 }
 
