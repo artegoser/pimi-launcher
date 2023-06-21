@@ -1,6 +1,6 @@
 {
   "name": "pimi-launcher",
-  "version": "1.2.2-alpha",
+  "version": "1.2.3-alpha",
   "description": "Modern Minecraft Launcher",
   "main": "./out/main/index.js",
   "author": "artegoser",
@@ -24,7 +24,7 @@
     "@electron-toolkit/utils": "^1.0.2",
     "@heroicons/react": "^2.0.18",
     "electron-updater": "^5.3.0",
-    "pimi-launcher-core": "^1.1.1",
+    "pimi-launcher-core": "^1.2.1",
     "react-router-dom": "^6.13.0",
     "react-select": "^5.7.3",
     "react-terminal-ui": "^1.0.5",
