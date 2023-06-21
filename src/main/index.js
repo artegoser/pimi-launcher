@@ -38,10 +38,8 @@ autoUpdater.on('download-progress', () => {
 })
 
 autoUpdater.on('update-downloaded', () => {
-  console.log('Update downloaded; will install in 5 seconds')
-  setTimeout(function () {
-    autoUpdater.quitAndInstall()
-  }, 5000)
+  console.log('Update downloaded')
+  autoUpdater.quitAndInstall()
 })
 
 function createWindow() {
